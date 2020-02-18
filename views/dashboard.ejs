@@ -2,13 +2,47 @@
 <html>
 <head>
   <title>Tpm Demonstration</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 <body>
   <div>
+    <h4>NIA Verification Database</h4>
     <div class="form-group">
-      <label for="usr">Name:</label>
+      <label for="usr">Search for user:</label>
       <input type="text" class="form-control" id="usr">
     </div>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+
 </body>
 </html>
