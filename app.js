@@ -1,6 +1,8 @@
+const app = require('express')();
+
 /*
 require('dotenv').config();
-const app = require('express')();
+
 var mysql = require('mysql');
 const { Client } = require('pg')
 const client = new Client()
@@ -108,6 +110,9 @@ immigrationServicemySql.raw('SELECT 1+1 as result')
         process.exit(1);
     });
 
+
+
+
 electoralCommisionpostgres.raw('SELECT 1+1 as result')
     .then(res => {
         console.log("Successfully connected to Postgres of Electoral Commission")
@@ -117,6 +122,19 @@ electoralCommisionpostgres.raw('SELECT 1+1 as result')
         console.error(err);
         process.exit(1);
     });
+
+
+
+
+app.get('/dashboard', (req, res)=>{
+    res.render('dashboard', {
+
+    })
+});
+
+
+
+
 
 
 
