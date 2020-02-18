@@ -1,4 +1,10 @@
 const app = require('express')();
+const express = require('express');
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 /*
 require('dotenv').config();
@@ -134,6 +140,9 @@ app.get('/dashboard', (req, res)=>{
 
 
 
+app.listen(5000, ()=>{
+    console.log('App listening on port 5000')
+});
 
 
 
