@@ -68,6 +68,22 @@ app.listen(5000,()=>{
 
 
 */
+const sql = require('mssql')
+const ConnectionString = require("mssql/lib/connectionstring");
+
+/*async function connectMssql(){
+    try {
+        // make sure that any items are correctly URL encoded in the connection string
+        await sql.connect('mssql://sa:pwd@localhost/master')
+        const result = await sql.query`CREATE DATABASE hello`
+        console.dir(result)
+    } catch (err) {
+        // ... error checks
+
+        console.error(err);
+    }
+}*/
+//connectMssql();
 const immigrationServicemySql = require('knex')({
     client: 'mysql',
     connection: {
@@ -86,16 +102,14 @@ const electoralCommisionpostgres = require('knex')({
 
 const dvlamssql = require('knex')({
     client: 'mssql',
-    server : 'localhost',
-    user : 'sa',
-    password : 'pwd',
-    database:'Test',
-    options: {
-        port: 1433
+    user: 'sa',
+    password: 'pwd',
+    server: 'localhost',
+    database: 'dvla',
+    connection: ConnectionString.resolve(`mssql://sa:pwd@localhost:1433/dvla`),
+});
 
-    }});
 
-/*
 dvlamssql.raw('SELECT 1+1 as name')
     .then(res => {
         console.log("Successfully connected to MSSql of DVLA")
@@ -104,7 +118,8 @@ dvlamssql.raw('SELECT 1+1 as name')
         console.error("Cannot connect to MSSql of DVLA");
         console.error(err);
         process.exit(1);
-    });*/
+    });
+
 
 immigrationServicemySql.raw('SELECT 1+1 as result')
     .then(res => {
@@ -115,8 +130,6 @@ immigrationServicemySql.raw('SELECT 1+1 as result')
         console.error(err);
         process.exit(1);
     });
-
-
 
 
 electoralCommisionpostgres.raw('SELECT 1+1 as result')
@@ -130,17 +143,61 @@ electoralCommisionpostgres.raw('SELECT 1+1 as result')
     });
 
 
-
-
-app.get('/dashboard', (req, res)=>{
-    res.render('dashboard', {
-
-    })
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard', {})
 });
 
+app.get('/dvla', async (req, res) => {
+    try {
+        let people = await dvlamssql.from('people')
+            .select();
+        console.log(people)
+        res.render('dvla', {people: people})
+    } catch (e) {
+        console.error(e);
+        res.send('Unexpected error occurred');
+    }
+
+});
+
+app.get('/electoral_commission', (req, res) => {
+    res.render('', {})
+});
+
+app.get('/immigration_service', (req, res) => {
+    res.render('', {});
+})
 
 
-app.listen(5000, ()=>{
+/*app.get('/populate_db', (req, res) => {
+    immigrationServicemySql.schema.createTableIfNotExists("payment_paypal_status", function (table) {
+        table.increments(); // integer id
+
+        // name
+        table.string('name');
+
+        //description
+        table.string('description');
+    }).then(function () {
+            immigrationServicemySql("payment_paypal_status").insert([
+                {name: "A", description: "A"},
+                {name: "B", description: "BB"},
+                {name: "C", description: "CCC"},
+                {name: "D", description: "DDDD"}
+            ]);
+
+            console.log('successful')
+        }
+    )
+        .then(()=>{
+            console.log('added data')
+        })
+        .catch(err=> {
+            console.error(err)
+        })
+})*/
+
+app.listen(5000, () => {
     console.log('App listening on port 5000')
 });
 
