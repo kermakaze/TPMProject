@@ -96,7 +96,7 @@ const immigrationServicemySql = require('knex')({
 
 const electoralCommisionpostgres = require('knex')({
     client: 'postgres',
-    connection: 'postgres://postgres:0icBf6np5iKC8wKz@localhost:5432/postgres',
+    connection: 'postgres://postgres:0icBf6np5iKC8wKz@localhost:5432/gis',
 
 });
 
@@ -164,38 +164,58 @@ app.get('/electoral_commission', (req, res) => {
     res.render('', {})
 });
 
-app.get('/immigration_service', (req, res) => {
-    res.render('', {});
+app.get('/immigration_service', async (req, res) => {
+    try {
+        let people = await immigrationServicemySql.from('users')
+            .select();
+        console.log(people)
+        res.render('dvla', {people: people})
+    } catch (e) {
+        console.error(e);
+        res.send('Unexpected error occurred');
+    }
 })
 
 
-/*app.get('/populate_db', (req, res) => {
-    immigrationServicemySql.schema.createTableIfNotExists("payment_paypal_status", function (table) {
+app.get('/populate_db', (req, res) => {
+
+    immigrationServicemySql.schema.createTableIfNotExists("users", function (table) {
         table.increments(); // integer id
 
         // name
-        table.string('name');
+        table.increments('id');
+        table.string('full_name');
+        table.string('nationality');
+        table.date('dob');
+        table.string('gender');
+        table.string('passport_no');
+        table.string('telephone');
 
         //description
-        table.string('description');
-    }).then(function () {
-            immigrationServicemySql("payment_paypal_status").insert([
-                {name: "A", description: "A"},
-                {name: "B", description: "BB"},
-                {name: "C", description: "CCC"},
-                {name: "D", description: "DDDD"}
-            ]);
+       // table.string('description');
+        return immigrationServicemySql("users").insert([
+            {full_name: "A",
+                nationality: "Ghanaian",
+            dob: '6/10/98',
+            gender: 'Male',
+            passport_no: '199999',
+            telephone: '0552587984'},
 
-            console.log('successful')
+        ]);
+    }).then(function () {
+            console.log('successful created immigration pg table data');
+
         }
     )
         .then(()=>{
-            console.log('added data')
+            console.log('Added users')
         })
-        .catch(err=> {
-            console.error(err)
+        .catch(err => {
+            console.error(err);
+            console.error('Could not create pg database')
         })
-})*/
+
+});
 
 app.listen(5000, () => {
     console.log('App listening on port 5000')
