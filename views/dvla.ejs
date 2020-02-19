@@ -10,7 +10,7 @@
 </head>
 <body>
 <div>
-    <h4>DVLA List</h4>
+    <h4>DVLA</h4>
     <div class="form-group">
         <label for="usr">Search for user:</label>
         <input type="text" class="form-control" id="usr">
@@ -19,27 +19,25 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
+            <th>id</th>+
+            <th>Full Name</th>
+            <th>dob</th>
+            <th>Nationality</th>
+            <th>Gender</th>
+            <th>Telephone</th>
         </tr>
         </thead>
         <tbody>
+        <%people.forEach(person => {%>
         <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
+            <td><%-person.id%></td>
+            <td><%-person.full_name%></td>
+            <td><%-person.dob%></td>
+            <td><%-person.nationality%></td>
+            <td><%-person.gender%></td>
+            <td><%-person.telephone%></td>
         </tr>
-        <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
-        </tr>
-        <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-        </tr>
+        <%})%>
         </tbody>
     </table>
 </div>
